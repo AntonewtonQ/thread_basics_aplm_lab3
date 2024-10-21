@@ -64,14 +64,28 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         Thread.sleep(1000);
                     }catch (InterruptedException e){
-                        Log.d(TAG, "Interruped Thead");
+                        // Sai do ciclo se a thread for interrompida
+                        Log.d(TAG, "Interruped Thread");
+                        return;
                     }
                 }
             }
         });
+        counterThread.start(); // Inicia a thread
     }
 
     private void stopCounter(){
+        // Interrompe a execução da thread
+        isRunning =false;
+        if(counterThread!=null){
+            counterThread.interrupt();
+        }
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Garante que a thread seja interrompida ao destruir a atividade
+        stopCounter();
     }
 }
